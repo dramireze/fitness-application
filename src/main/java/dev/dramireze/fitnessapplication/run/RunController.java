@@ -1,6 +1,7 @@
 package dev.dramireze.fitnessapplication.run;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,20 +12,17 @@ import java.util.Optional;
 @RequestMapping("/api/runs")
 public class RunController {
 
-    private final RunRepository runRepository;
-
-    public RunController(RunRepository runRepository) {
-        this.runRepository = runRepository;
-    }
+    @Autowired
+    private RunService runService;
 
     @GetMapping("")
-    List<Run> findAll() {
-        return runRepository.findAll();
+    public List<Run> findAll() {
+        return runService.findAll();
     }
 
     @GetMapping("/{id}")
     Run findById(@PathVariable Integer id) {
-        Optional<Run> run = runRepository.findById(id);
+        Optional<Run> run = runService.findById(id);
         if (run.isEmpty()) {
             throw new RunNotFoundException();
         }
@@ -34,19 +32,19 @@ public class RunController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     void create(@Valid @RequestBody Run run) {
-        runRepository.create(run);
+        runService.save(run);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@Valid @RequestBody Run run, @PathVariable Integer id) {
-        runRepository.update(run, id);
+        runService.save(run);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable Integer id) {
-        runRepository.delete(id);
+        runService.delete(runService.findById(id).get());
     }
 
 }
