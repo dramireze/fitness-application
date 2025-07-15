@@ -5,6 +5,7 @@ public record Address(
         String suite,
         String city,
         String zipcode,
-        Geo geo
+        Geo geo,
+        String country
 ) {
 }

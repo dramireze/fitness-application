@@ -9,6 +9,7 @@ public record User(
         Address address,
         String phone,
         String website,
-        Company company
+        Company company,
+        Integer age
 ) {
 }
